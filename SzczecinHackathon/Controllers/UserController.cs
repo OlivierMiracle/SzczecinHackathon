@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SzczecinHackathon.DTOs;
+﻿using SzczecinHackathon.DTOs;
 using SzczecinHackathon.Models;
 using SzczecinHackathon.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SzczecinHackathon.Controllers
 {
@@ -19,7 +19,7 @@ namespace SzczecinHackathon.Controllers
         }
 
         [HttpGet(Name = "GetUser")]
-        public async Task<ActionResult<GetUserDto>> GetUser(string email) 
+        public async Task<ActionResult<GetUserDto>> GetUser( string email) 
         {
             var response = await _userService.GetUser(email);
 
