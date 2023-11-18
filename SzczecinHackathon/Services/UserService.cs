@@ -49,37 +49,59 @@ namespace SzczecinHackathon.Services
             };
         }
 
-        public async Task<ServiceResponse<string[]>> GetUserFriendList(string email)
+        public async Task<ServiceResponse<List<GetUserDto>>> GetUserFriendList(string email)
         {
             if (email == null)
-                { return new ServiceResponse<string[]> { Success = false, Message = "Błąd 3" }; }
+                { return new ServiceResponse<List<GetUserDto>> { Success = false, Message = "Błąd 3" }; }
 
             User? user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
 
-            if (user == null)
-                { return new ServiceResponse<string[]> { Success = false, Message = "Nie znaleziono usera (。﹏。*)" }; }
+            if (user == null || user.Friends == null)
+                { return new ServiceResponse<List<GetUserDto>> { Success = false, Message = "Nie znaleziono usera (。﹏。*) lub ma nulla, a nie przyjaciol" }; }
 
-            return new ServiceResponse<string[]>
+            List<GetUserDto> listToReturn = new List<GetUserDto>();
+
+            foreach (string i in user.Friends)
             {
-                Data = user.Friends,
+                User? friend = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == i);
+                if (friend == null)
+                    continue;
+
+                listToReturn.Add(Mappings.User_GetUserDTO(friend));
+            }
+
+            return new ServiceResponse<List<GetUserDto>>
+            {
+                Data = listToReturn,
                 Message = "Jest lista przyjaciol",
                 Success = true
             };
         }
 
-        public async Task<ServiceResponse<string[]>> GetUserFriendRequestList(string email)
+        public async Task<ServiceResponse<List<GetUserDto>>> GetUserFriendRequestList(string email)
         {
             if (email == null)
-            { return new ServiceResponse<string[]> { Success = false, Message = "Błąd 4" }; }
+                { return new ServiceResponse<List<GetUserDto>> { Success = false, Message = "Błąd 5" }; }
 
             User? user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
 
-            if (user == null)
-            { return new ServiceResponse<string[]> { Success = false, Message = "Nie znaleziono usera (。﹏。*)" }; }
+            if (user == null || user.FriendsRequests == null)
+                { return new ServiceResponse<List<GetUserDto>> { Success = false, Message = "Nie znaleziono usera (。﹏。*) lub ma nulla, a nie przyjaciol" }; }
 
-            return new ServiceResponse<string[]>
+            List<GetUserDto> listToReturn = new List<GetUserDto>();
+
+            foreach (string i in user.FriendsRequests)
             {
-                Data = user.FriendsRequests,
+                User? friend = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == i);
+                if (friend == null)
+                    continue;
+
+                listToReturn.Add(Mappings.User_GetUserDTO(friend));
+            }
+
+            return new ServiceResponse<List<GetUserDto>>
+            {
+                Data = listToReturn,
                 Message = "Jest lista przyjaciol",
                 Success = true
             };
@@ -103,6 +125,57 @@ namespace SzczecinHackathon.Services
                 Success = true,
                 Message = "Sukces",
                 Data = user.ImagePath
+            };
+        }
+
+        public async Task<ServiceResponse<List<GetUserDto>>> GetUsers()
+        {
+            List<User>? users = await _dataContext.Users.ToListAsync();
+
+            if (!users.Any())
+                return new ServiceResponse<List<GetUserDto>> { Success = false, Message = "User table is empty" };
+
+            List<GetUserDto> usersDTOs = new();
+
+            foreach (User user in users)
+            {
+                usersDTOs.Add(Mappings.User_GetUserDTO(user));
+            }
+
+            return new ServiceResponse<List<GetUserDto>>
+            {
+                Data = usersDTOs,
+                Message = "all users from db",
+                Success = true
+            };
+        }
+
+        public async Task<ServiceResponse<List<GetUserDto>>> GetUserSendedInvitationsList(string email)
+        {
+            if (email == null)
+                { return new ServiceResponse<List<GetUserDto>> { Success = false, Message = "Błąd 7 I guess?" }; }
+
+            User? user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null || user.SendedInvitations == null)
+                { return new ServiceResponse<List<GetUserDto>> { Success = false, Message = "Nie znaleziono usera (。﹏。*) lub ma nulla, a nie przyjaciol" }; }
+
+            List<GetUserDto> listToReturn = new List<GetUserDto>();
+
+            foreach (string i in user.SendedInvitations)
+            {
+                User? friend = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == i);
+                if (friend == null)
+                    continue;
+
+                listToReturn.Add(Mappings.User_GetUserDTO(friend));
+            }
+
+            return new ServiceResponse<List<GetUserDto>>
+            {
+                Data = listToReturn,
+                Message = "Jest lista wyslanych zapro",
+                Success = true
             };
         }
     }

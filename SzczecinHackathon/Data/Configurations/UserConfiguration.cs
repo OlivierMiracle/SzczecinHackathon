@@ -17,6 +17,10 @@ namespace SzczecinHackathon.Data.Configurations
                     .HasConversion(
                         v => string.Join(',', v),
                         v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+            builder.Property(e => e.SendedInvitations)
+                    .HasConversion(
+                        v => string.Join(',', v),
+                        v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }

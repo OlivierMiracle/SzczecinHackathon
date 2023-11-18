@@ -29,6 +29,17 @@ namespace SzczecinHackathon.Controllers
             return Ok(response);
         }
 
+        [HttpGet(Name = "GetAllUsers")]
+        public async Task<ActionResult<List<GetUserDto>>> GetAllUsers()
+        {
+            var response = await _userService.GetUsers();
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
         [HttpPost(Name = "CreateUser")]
         public async Task<ActionResult<CreateUserDto>> CreateUser(string email, string name, string lastName)
         {
