@@ -22,6 +22,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IFriendsService, FriendService>();
+builder.Services.AddScoped<IHappeningService, HappeningService>();
 
 var app = builder.Build();
 

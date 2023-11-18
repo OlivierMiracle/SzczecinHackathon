@@ -1,4 +1,6 @@
-﻿namespace SzczecinHackathon.Models
+﻿using System.Text.Json.Serialization;
+
+namespace SzczecinHackathon.Models
 {
     public class User
     {
@@ -9,5 +11,8 @@
         public string[] Friends { get; set; } = new string[0];
         public string[] FriendsRequests { get; set; } = new string[0];
         public string[] SendedInvitations { get; set; } = new string[0];
+
+        [JsonIgnore]
+        public ICollection<HappeningUser> HappeningUsers { get; set; } = new List<HappeningUser>();
     }
 }
