@@ -1,4 +1,5 @@
 ﻿using SzczecinHackathon.DTOs;
+using SzczecinHackathon.Models;
 using SzczecinHackathon.Shared;
 
 namespace SzczecinHackathon.Services.Interfaces
@@ -6,6 +7,7 @@ namespace SzczecinHackathon.Services.Interfaces
     public interface IUserService
     {
         Task<ServiceResponse<CreateUserDto>> CreateUser(CreateUserDto createUserDto);
+        Task<ServiceResponse<User>> UpdateUser(UserDto updatedUser, string email); 
         Task<ServiceResponse<GetUserDto>> GetUser(string email);
         Task<ServiceResponse<List<GetUserDto>>> GetUsers();
         Task<ServiceResponse<List<GetUserDto>>> GetUserFriendList(string email);

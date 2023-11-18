@@ -31,6 +31,30 @@ namespace SzczecinHackathon.Services
             };
         }
 
+        public async Task<ServiceResponse<User>> UpdateUser(UserDto updatedUser, string email)
+        {
+            if (updatedUser == null)
+                return new ServiceResponse<User> { Success = false, Message = "Provided user was null" };
+
+            var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (updatedUser == null)
+                return new ServiceResponse<User> { Success = false, Message = "No user with this email in db" };
+
+            user.Name = updatedUser.Name;
+            user.LastName = updatedUser.LastName;
+
+            _dataContext.Users.Update(user);
+            await _dataContext.SaveChangesAsync();
+
+            return new ServiceResponse<User>
+            {
+                Success = true,
+                Message = "Update was git",
+                Data = user
+            };
+        }
+
         public async Task<ServiceResponse<GetUserDto>> GetUser(string email)
         {
             if (email == null) 
