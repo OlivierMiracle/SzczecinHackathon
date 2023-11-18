@@ -6,7 +6,7 @@ using SzczecinHackathon.Services.Interfaces;
 namespace SzczecinHackathon.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -24,7 +24,7 @@ namespace SzczecinHackathon.Controllers
             var response = await _userService.GetUser(email);
 
             if (!response.Success)
-                return Ok(response);
+                return BadRequest(response);
 
             return Ok(response);
         }
@@ -40,7 +40,7 @@ namespace SzczecinHackathon.Controllers
             });
 
             if (!response.Success)
-                return Ok(response);
+                return BadRequest(response);
 
             return Ok(response);
         }

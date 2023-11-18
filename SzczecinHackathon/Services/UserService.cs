@@ -50,6 +50,42 @@ namespace SzczecinHackathon.Services
             };
         }
 
+        public async Task<ServiceResponse<string[]>> GetUserFriendList(string email)
+        {
+            if (email == null)
+                { return new ServiceResponse<string[]> { Success = false, Message = "Błąd 3" }; }
+
+            User? user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null)
+                { return new ServiceResponse<string[]> { Success = false, Message = "Nie znaleziono usera (。﹏。*)" }; }
+
+            return new ServiceResponse<string[]>
+            {
+                Data = user.Friends,
+                Message = "Jest lista przyjaciol",
+                Success = true
+            };
+        }
+
+        public async Task<ServiceResponse<string[]>> GetUserFriendRequestList(string email)
+        {
+            if (email == null)
+            { return new ServiceResponse<string[]> { Success = false, Message = "Błąd 4" }; }
+
+            User? user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null)
+            { return new ServiceResponse<string[]> { Success = false, Message = "Nie znaleziono usera (。﹏。*)" }; }
+
+            return new ServiceResponse<string[]>
+            {
+                Data = user.FriendsRequests,
+                Message = "Jest lista przyjaciol",
+                Success = true
+            };
+        }
+
         public async Task<ServiceResponse<string>> GetUserImage(string email)
         {
             var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
