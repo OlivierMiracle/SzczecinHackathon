@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting.Internal;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using SzczecinHackathon.Services.Interfaces;
 using SzczecinHackathon.Shared;

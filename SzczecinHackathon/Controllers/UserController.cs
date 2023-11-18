@@ -24,7 +24,7 @@ namespace SzczecinHackathon.Controllers
             var response = await _userService.GetUser(email);
 
             if (!response.Success)
-                return BadRequest(response);
+                return Ok(response);
 
             return Ok(response);
         }
@@ -40,7 +40,7 @@ namespace SzczecinHackathon.Controllers
             });
 
             if (!response.Success)
-                return BadRequest(response);
+                return Ok(response);
 
             return Ok(response);
         }
