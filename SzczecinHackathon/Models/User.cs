@@ -11,8 +11,8 @@ namespace SzczecinHackathon.Models
         public string[] Friends { get; set; } = new string[0];
         public string[] FriendsRequests { get; set; } = new string[0];
         public string[] SendedInvitations { get; set; } = new string[0];
-        public List<ChatUser> ChatUsers { get; set; }
-
+        [JsonIgnore]
+        public ICollection<ChatUser> ChatUsers { get; set; } = new List<ChatUser>();
         [JsonIgnore]
         public ICollection<HappeningUser> HappeningUsers { get; set; } = new List<HappeningUser>();
     }

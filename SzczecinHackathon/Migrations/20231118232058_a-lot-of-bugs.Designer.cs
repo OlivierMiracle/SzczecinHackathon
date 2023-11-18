@@ -11,8 +11,8 @@ using SzczecinHackathon.Data;
 namespace SzczecinHackathon.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231118215213_AddsHappenings")]
-    partial class AddsHappenings
+    [Migration("20231118232058_a-lot-of-bugs")]
+    partial class alotofbugs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,13 +26,24 @@ namespace SzczecinHackathon.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UserIds")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("Chats");
+                });
+
+            modelBuilder.Entity("SzczecinHackathon.Models.ChatUser", b =>
+                {
+                    b.Property<int>("ChatId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ChatId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatUser");
                 });
 
             modelBuilder.Entity("SzczecinHackathon.Models.Happening", b =>
@@ -137,6 +148,25 @@ namespace SzczecinHackathon.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("SzczecinHackathon.Models.ChatUser", b =>
+                {
+                    b.HasOne("SzczecinHackathon.Models.Chat", "Chat")
+                        .WithMany("ChatUsers")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SzczecinHackathon.Models.User", "User")
+                        .WithMany("ChatUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SzczecinHackathon.Models.HappeningUser", b =>
                 {
                     b.HasOne("SzczecinHackathon.Models.Happening", "Happening")
@@ -167,6 +197,8 @@ namespace SzczecinHackathon.Migrations
 
             modelBuilder.Entity("SzczecinHackathon.Models.Chat", b =>
                 {
+                    b.Navigation("ChatUsers");
+
                     b.Navigation("Messages");
                 });
 
@@ -177,6 +209,8 @@ namespace SzczecinHackathon.Migrations
 
             modelBuilder.Entity("SzczecinHackathon.Models.User", b =>
                 {
+                    b.Navigation("ChatUsers");
+
                     b.Navigation("HappeningUsers");
                 });
 #pragma warning restore 612, 618

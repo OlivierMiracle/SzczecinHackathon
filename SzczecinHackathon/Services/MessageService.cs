@@ -14,15 +14,20 @@ namespace SzczecinHackathon.Services
         {
             _dataContext = dataContext;
         }
-        public async Task<ServiceResponse<List<Chat>>> GetUserChats(string userId)
+        public async Task<ServiceResponse<List<int>>> GetUserChats(string userId)
         {
             var data = _dataContext.Chats.Where(c => c.ChatUsers.Any(c => c.UserId == userId))
-                .Include(c => c.ChatUsers)
                 .ToList();
-            
-            return new ServiceResponse<List<Chat>>
+            var ids = new List<int>();
+
+            foreach (var chat in data)
             {
-                Data = data,
+                ids.Add(chat.Id);
+            }
+            
+            return new ServiceResponse<List<int>>
+            {
+                Data = ids,
                 Success = true
             };
         }
@@ -43,6 +48,33 @@ namespace SzczecinHackathon.Services
                 return new ServiceResponse<List<Message>>
                 {
                     Data = messages,
+                    Success = true
+                };
+            }
+        }
+        public async Task<ServiceResponse<List<string>>> GetChatUsers(int chatId)
+        {
+            var chatUsers = _dataContext.Chats.Include(c => c.ChatUsers).FirstOrDefault(c => c.Id == chatId).ChatUsers;
+            var users = new List<string>();
+
+            foreach (var chatUser in chatUsers)
+            {
+                users.Add(chatUser.UserId);
+            }
+
+            if (users.Count == 0)
+            {
+                return new ServiceResponse<List<string>>
+                {
+                    Success = false,
+                    Message = "brak wiadomości"
+                };
+            }
+            else
+            {
+                return new ServiceResponse<List<string>>
+                {
+                    Data = users,
                     Success = true
                 };
             }
@@ -71,7 +103,6 @@ namespace SzczecinHackathon.Services
             foreach(var item in theoretical)
             {
                 ChatUser chatUser = new ChatUser { ChatId = chat.Id, UserId = item.Email};
-                _dataContext.ChatUsers.Add(chatUser);
                 chat.ChatUsers.Add(chatUser);
             }
 

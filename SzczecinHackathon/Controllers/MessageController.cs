@@ -19,7 +19,7 @@ namespace SzczecinHackathon.Controllers
             _messageService = messageService;
         }
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Chat>>>> GetUserChats (string userId)
+        public async Task<ActionResult<ServiceResponse<List<int>>>> GetUserChats (string userId)
         {
             var response = await _messageService.GetUserChats(userId);
 
@@ -29,6 +29,13 @@ namespace SzczecinHackathon.Controllers
         public async Task<ActionResult<ServiceResponse<List<Message>>>> GetChatMessages (int chatId)
         {
             var response = await _messageService.GetChatMessages(chatId);
+
+            return Ok(response);
+        }
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<string>>>> GetChatUsers(int chatId)
+        {
+            var response = await _messageService.GetChatUsers(chatId);
 
             return Ok(response);
         }

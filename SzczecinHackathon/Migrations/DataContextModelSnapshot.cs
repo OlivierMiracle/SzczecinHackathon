@@ -36,9 +36,11 @@ namespace SzczecinHackathon.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.HasKey("ChatId", "UserId");
 
-                    b.ToTable("Chats", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatUser");
                 });
 
             modelBuilder.Entity("SzczecinHackathon.Models.Happening", b =>
@@ -66,11 +68,8 @@ namespace SzczecinHackathon.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-                    b.HasKey("ChatId", "UserId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Happenings", (string)null);
+                    b.ToTable("Happenings");
                 });
 
             modelBuilder.Entity("SzczecinHackathon.Models.HappeningUser", b =>
@@ -85,8 +84,7 @@ namespace SzczecinHackathon.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("HappeningUser", (string)null);
-                    b.ToTable("ChatUsers");
+                    b.ToTable("HappeningUser");
                 });
 
             modelBuilder.Entity("SzczecinHackathon.Models.Message", b =>
@@ -110,7 +108,7 @@ namespace SzczecinHackathon.Migrations
 
                     b.HasIndex("ChatId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("SzczecinHackathon.Models.User", b =>
@@ -144,7 +142,26 @@ namespace SzczecinHackathon.Migrations
 
                     b.HasKey("Email");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SzczecinHackathon.Models.ChatUser", b =>
+                {
+                    b.HasOne("SzczecinHackathon.Models.Chat", "Chat")
+                        .WithMany("ChatUsers")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SzczecinHackathon.Models.User", "User")
+                        .WithMany("ChatUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SzczecinHackathon.Models.HappeningUser", b =>
@@ -164,21 +181,6 @@ namespace SzczecinHackathon.Migrations
                     b.Navigation("Happening");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SzczecinHackathon.Models.ChatUser", b =>
-                {
-                    b.HasOne("SzczecinHackathon.Models.Chat", null)
-                        .WithMany("ChatUsers")
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SzczecinHackathon.Models.User", null)
-                        .WithMany("ChatUsers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("SzczecinHackathon.Models.Message", b =>
@@ -204,12 +206,9 @@ namespace SzczecinHackathon.Migrations
 
             modelBuilder.Entity("SzczecinHackathon.Models.User", b =>
                 {
-                    b.Navigation("HappeningUsers");
-                });
-
-            modelBuilder.Entity("SzczecinHackathon.Models.User", b =>
-                {
                     b.Navigation("ChatUsers");
+
+                    b.Navigation("HappeningUsers");
                 });
 #pragma warning restore 612, 618
         }
