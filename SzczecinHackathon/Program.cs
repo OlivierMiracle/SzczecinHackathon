@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using SzczecinHackathon.Controllers;
 using SzczecinHackathon.Data;
