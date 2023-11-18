@@ -11,15 +11,17 @@ namespace SzczecinHackathon.Controllers
     {
         private readonly IUserService _userService;
         private readonly IImageService _imageService;
+        private readonly IWebHostEnvironment _environment;
 
-        public UserController(IUserService userService, IImageService imageService)
+        public UserController(IUserService userService, IImageService imageService, IWebHostEnvironment environment)
         {
             _userService = userService;
             _imageService = imageService;
+            _environment = environment;
         }
 
         [HttpGet(Name = "GetUser")]
-        public async Task<ActionResult<GetUserDto>> GetUser(string email) 
+        public async Task<ActionResult<GetUserDto>> GetUser(string email)
         {
             var response = await _userService.GetUser(email);
 
@@ -57,14 +59,17 @@ namespace SzczecinHackathon.Controllers
         }
 
         [HttpGet(Name = "GetUserImage")]
-        public async Task<ActionResult<ImageModel>> GetUserImage(string email)
+        public IActionResult GetUserImage(string imageName)
         {
-            var response = await _userService.GetUser(email);
+            var imgPath = Path.Combine(_environment.ContentRootPath, @"images\" + imageName);
 
-            if (!response.Success)
-                return BadRequest(response);
+            if (System.IO.File.Exists(imgPath))
+            {
+                var imageBytes = System.IO.File.ReadAllBytes(imgPath);
+                return File(imageBytes, "image/jpeg"); // Adjust the content type based on your image type
+            }
 
-            return Ok(response);
+            return BadRequest();
         }
     }
 }
