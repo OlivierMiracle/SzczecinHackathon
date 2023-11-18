@@ -98,7 +98,7 @@ namespace SzczecinHackathon.Controllers
         [HttpPost(Name = "RemoveFriend")]
         public async Task<ActionResult<bool>> RemoveFriend(string user, string personToKick)
         {
-            var response = await _friendsService.SendInvitaion(user, personToKick);
+            var response = await _friendsService.RemoveFriend(user, personToKick);
 
             if (!response.Success)
                 return BadRequest(response);
