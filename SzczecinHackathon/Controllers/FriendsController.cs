@@ -17,15 +17,26 @@ namespace SzczecinHackathon.Controllers
             _userService = userService;
         }
 
-        //[HttpGet(Name = "GetFriendList")]
-        //public async Task<ActionResult<List<string>>> GetFriendList(string email)
-        //{
-        //    var response = await _userService.GetUser(email);
+        [HttpGet(Name = "GetFriendList")]
+        public async Task<ActionResult<List<string>>> GetFriendList(string email)
+        {
+            var response = await _userService.GetUserFriendList(email);
 
-        //    if (!response.Success)
-        //        return BadRequest(response);
+            if (!response.Success)
+                return BadRequest(response);
 
+            return Ok(response);
+        }
 
-        //}
+        [HttpGet(Name = "GetFriendRequestList")]
+        public async Task<ActionResult<List<string>>> GetFriendRequestList(string email)
+        {
+            var response = await _userService.GetUserFriendRequestList(email);
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
     }
 }
