@@ -11,13 +11,11 @@ namespace SzczecinHackathon.Controllers
     {
         private readonly IUserService _userService;
         private readonly IImageService _imageService;
-        private readonly IWebHostEnvironment _environment;
 
-        public UserController(IUserService userService, IImageService imageService, IWebHostEnvironment environment)
+        public UserController(IUserService userService, IImageService imageService)
         {
             _userService = userService;
             _imageService = imageService;
-            _environment = environment;
         }
 
         [HttpGet(Name = "GetUser")]
@@ -50,7 +48,7 @@ namespace SzczecinHackathon.Controllers
         [HttpPost(Name = "UploadImage")]
         public async Task<ActionResult<string>> UploadImage(ImageModel image)
         {
-            var response = await _imageService.WriteImageToDisk(image.Bytes);
+            var response = await _imageService.WriteImageToDisk(image.Bytes, image.UserEmail);
 
             if (!response.Success)
                 return BadRequest(response);
@@ -59,14 +57,19 @@ namespace SzczecinHackathon.Controllers
         }
 
         [HttpGet(Name = "GetUserImage")]
-        public IActionResult GetUserImage(string imageName)
+        public async Task<IActionResult> GetUserImage(string userEmail)
         {
-            var imgPath = Path.Combine(_environment.ContentRootPath, @"images\" + imageName);
+            var response = await _userService.GetUserImage(userEmail);
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            var imgPath = Path.Combine(response.Data);
 
             if (System.IO.File.Exists(imgPath))
             {
                 var imageBytes = System.IO.File.ReadAllBytes(imgPath);
-                return File(imageBytes, "image/jpeg"); // Adjust the content type based on your image type
+                return File(imageBytes, "image/jpeg");
             }
 
             return BadRequest();

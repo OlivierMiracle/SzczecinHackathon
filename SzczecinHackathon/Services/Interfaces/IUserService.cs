@@ -9,6 +9,6 @@ namespace SzczecinHackathon.Services.Interfaces
     {
         Task<ServiceResponse<CreateUserDto>> CreateUser(CreateUserDto createUserDto);
         Task<ServiceResponse<GetUserDto>> GetUser(string email);
-        Task<ServiceResponse<ImageModel>> GetUserImage(string email);
+        Task<ServiceResponse<string>> GetUserImage(string email);
     }
 }

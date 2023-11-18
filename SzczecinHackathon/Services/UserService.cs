@@ -50,9 +50,25 @@ namespace SzczecinHackathon.Services
             };
         }
 
-        public Task<ServiceResponse<ImageModel>> GetUserImage(string email)
+        public async Task<ServiceResponse<string>> GetUserImage(string email)
         {
-            throw new NotImplementedException();
+            var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null || user.ImagePath == null)
+            {
+                return new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Podany użytkownik nie istnieje lub nie posiada zdjęcia"
+                };
+            }
+
+            return new ServiceResponse<string>
+            {
+                Success = true,
+                Message = "Sukces",
+                Data = user.ImagePath
+            };
         }
     }
 }
