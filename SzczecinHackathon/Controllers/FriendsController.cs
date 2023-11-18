@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SzczecinHackathon.Data;
+using SzczecinHackathon.DTOs;
 using SzczecinHackathon.Services.Interfaces;
 
 namespace SzczecinHackathon.Controllers
@@ -8,17 +9,15 @@ namespace SzczecinHackathon.Controllers
     [Route("api/[controller]/[action]")]
     public class FriendsController : ControllerBase
     {
-        private readonly DataContext _dataContext;
         private readonly IUserService _userService;
 
-        public FriendsController(DataContext dataContext, IUserService userService)
+        public FriendsController(IUserService userService)
         {
-            _dataContext = dataContext;
             _userService = userService;
         }
 
         [HttpGet(Name = "GetFriendList")]
-        public async Task<ActionResult<List<string>>> GetFriendList(string email)
+        public async Task<ActionResult<List<GetUserDto>>> GetFriendList(string email)
         {
             var response = await _userService.GetUserFriendList(email);
 
@@ -29,7 +28,7 @@ namespace SzczecinHackathon.Controllers
         }
 
         [HttpGet(Name = "GetFriendRequestList")]
-        public async Task<ActionResult<List<string>>> GetFriendRequestList(string email)
+        public async Task<ActionResult<List<GetUserDto>>> GetFriendRequestList(string email)
         {
             var response = await _userService.GetUserFriendRequestList(email);
 
@@ -38,5 +37,7 @@ namespace SzczecinHackathon.Controllers
 
             return Ok(response);
         }
+
+
     }
 }
