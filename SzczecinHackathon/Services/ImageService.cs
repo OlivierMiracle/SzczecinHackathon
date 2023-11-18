@@ -1,5 +1,8 @@
-﻿using System.Drawing;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 using System.Drawing.Imaging;
+using SzczecinHackathon.Data;
+using SzczecinHackathon.Models;
 using SzczecinHackathon.Services.Interfaces;
 using SzczecinHackathon.Shared;
 
@@ -8,13 +11,15 @@ namespace SzczecinHackathon.Services
     public class ImageService : IImageService
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly DataContext _dataContext;
 
-        public ImageService(IWebHostEnvironment hostingEnvironment)
+        public ImageService(IWebHostEnvironment hostingEnvironment, DataContext dataContext)
         {
             _hostingEnvironment = hostingEnvironment;
+            _dataContext = dataContext;
         }
 
-        public async Task<ServiceResponse<string>> WriteImageToDisk(byte[] arr)
+        public async Task<ServiceResponse<string>> WriteImageToDisk(byte[] arr, string email)
         {
             var filename = $@"images\{DateTime.Now.Ticks}.";
 
@@ -37,9 +42,23 @@ namespace SzczecinHackathon.Services
                 im.Save(path, frmt);
             }
 
+            User? user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+            
+            if (user == null) 
+            {
+                return new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Gostka ni ma"
+                };
+            }
+
+            user.ImagePath = path;
+            await _dataContext.SaveChangesAsync();
+
             return new ServiceResponse<string>
             {
-                Data = $@"http:\\{path}",
+                Data = $@"{path}",
                 Success = true,
                 Message = "Jest git"
             };

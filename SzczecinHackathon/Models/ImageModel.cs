@@ -2,7 +2,7 @@
 {
     public class ImageModel
     {
-        public string Name { get; set; }
+        public string UserEmail { get; set; }
         public byte[] Bytes { get; set; }
     }
 }
