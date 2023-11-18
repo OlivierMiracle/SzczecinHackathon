@@ -28,6 +28,20 @@ namespace SzczecinHackathon.Services
                     Message = "User do ktorego inv dotn istnieje lub nie istniejesz ty. hyhyhy"
                 };
 
+            if (userModel.SendedInvitations.Contains(reciverModel.Email))
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Message = "Juz zaprosiles tego usera"
+                };
+
+            if (userModel.Email == reciverModel.Email)
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    Message = "Nie mozna zaprosic samego siebie"
+                };
+
             userModel.SendedInvitations = userModel.SendedInvitations.Append(reciverModel.Email).ToArray();
             reciverModel.FriendsRequests = reciverModel.FriendsRequests.Append(userModel.Email).ToArray();
 
