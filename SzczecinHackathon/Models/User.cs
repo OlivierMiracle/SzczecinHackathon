@@ -9,5 +9,6 @@
         public string[] Friends { get; set; } = new string[0];
         public string[] FriendsRequests { get; set; } = new string[0];
         public string[] SendedInvitations { get; set; } = new string[0];
+        public List<ChatUser> ChatUsers { get; set; }
     }
 }

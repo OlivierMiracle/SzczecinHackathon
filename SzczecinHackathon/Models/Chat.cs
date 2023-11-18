@@ -3,7 +3,7 @@
     public class Chat
     {
         public int Id { get; set; }
-        public string[] UserIds { get; set; }
+        public List<ChatUser> ChatUsers { get; set; }
         public List<Message> Messages { get; set; }
     }
 }

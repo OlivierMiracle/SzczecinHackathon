@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using SzczecinHackathon.Data;
 using SzczecinHackathon.Models;
 using SzczecinHackathon.Shared;
@@ -45,11 +46,9 @@ namespace SzczecinHackathon.Controllers
             return Ok();
         }
         [HttpPut]
-        public async Task<ActionResult> PutChat(List<string> users)
+        public async Task<ActionResult> CreateChat(List<string> userIds)
         {
-            Chat chat = new Chat();
-            chat.UserIds = users.ToArray();
-            await _messageService.PutChat(chat);
+            await _messageService.CreateChat(userIds);
 
             return Ok();
         }

@@ -8,6 +8,6 @@ namespace SzczecinHackathon.Controllers
         public Task<ServiceResponse<List<Chat>>> GetUserChats(string userId);
         public Task<ServiceResponse<List<Message>>> GetChatMessages(int chatId);
         public Task PutMessage(Message content);
-        public Task PutChat(Chat chat);
+        public Task CreateChat(List<string> userIds);
     }
 }
