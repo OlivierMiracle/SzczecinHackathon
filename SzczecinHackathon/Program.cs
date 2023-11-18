@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using SzczecinHackathon.Controllers;
 using SzczecinHackathon.Data;
 using SzczecinHackathon.Services;
 using SzczecinHackathon.Services.Interfaces;
@@ -20,6 +20,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddScoped<IFriendsService, FriendService>();
 
 var app = builder.Build();

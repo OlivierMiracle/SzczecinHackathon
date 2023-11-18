@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SzczecinHackathon.Data;
 using SzczecinHackathon.DTOs;
 using SzczecinHackathon.Models;
