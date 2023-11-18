@@ -22,6 +22,7 @@ namespace SzczecinHackathon.Shared
                 Email = user.Email,
                 Name = user.Name,
                 LastName = user.LastName,
+                ImagePath = user.ImagePath,
             };
         }
     }
