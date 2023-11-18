@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SzczecinHackathon.DTOs;
+using SzczecinHackathon.Models;
 using SzczecinHackathon.Shared;
 
 namespace SzczecinHackathon.Services.Interfaces
@@ -8,5 +9,6 @@ namespace SzczecinHackathon.Services.Interfaces
     {
         Task<ServiceResponse<CreateUserDto>> CreateUser(CreateUserDto createUserDto);
         Task<ServiceResponse<GetUserDto>> GetUser(string email);
+        Task<ServiceResponse<ImageModel>> GetUserImage(string email);
     }
 }

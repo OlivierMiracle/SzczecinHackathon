@@ -49,5 +49,10 @@ namespace SzczecinHackathon.Services
                 Success = true
             };
         }
+
+        public Task<ServiceResponse<ImageModel>> GetUserImage(string email)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
