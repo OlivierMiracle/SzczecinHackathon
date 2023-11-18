@@ -1,10 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SzczecinHackathon.Data.Configurations;
+using SzczecinHackathon.Models;
 
 namespace SzczecinHackathon.Data
 {
     public class DataContext: DbContext
     {
-        public DbSet<WeatherForecast> WeatherForecasts { get; set; }
+        public DbSet<User> Users { get; set; }
+
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
