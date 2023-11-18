@@ -29,6 +29,17 @@ namespace SzczecinHackathon.Controllers
             return Ok(response);
         }
 
+        [HttpPut(Name = "UpdateUser")]
+        public async Task<ActionResult<UserDto>> UpdateUser(UserDto updatedUser, string email)
+        {
+            var response = await _userService.UpdateUser(updatedUser, email);
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok();
+        }
+
         [HttpGet(Name = "GetAllUsers")]
         public async Task<ActionResult<List<GetUserDto>>> GetAllUsers()
         {

@@ -62,7 +62,7 @@ namespace SzczecinHackathon.Controllers
             return Ok(response);
         }
 
-        [HttpPost(Name = "RejectInvitaion")]
+        [HttpDelete(Name = "RejectInvitaion")]
         public async Task<ActionResult<bool>> RejectInvitaion(string user, string sender)
         {
             var response = await _friendsService.RejectInvitaion(user, sender);
@@ -84,7 +84,7 @@ namespace SzczecinHackathon.Controllers
             return Ok(response);
         }
 
-        [HttpPost(Name = "CancelInvitaion")]
+        [HttpDelete(Name = "CancelInvitaion")]
         public async Task<ActionResult<bool>> CancelInvitaion(string user, string reciver)
         {
             var response = await _friendsService.CancelInvitaion(user, reciver);
@@ -95,7 +95,7 @@ namespace SzczecinHackathon.Controllers
             return Ok(response);
         }
 
-        [HttpPost(Name = "RemoveFriend")]
+        [HttpDelete(Name = "RemoveFriend")]
         public async Task<ActionResult<bool>> RemoveFriend(string user, string personToKick)
         {
             var response = await _friendsService.RemoveFriend(user, personToKick);
