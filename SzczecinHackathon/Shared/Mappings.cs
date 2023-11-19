@@ -23,6 +23,8 @@ namespace SzczecinHackathon.Shared
                 Name = user.Name,
                 LastName = user.LastName,
                 ImagePath = user.ImagePath,
+                Description = user.Description,
+                Birthday = user.Birthday,
             };
         }
     }

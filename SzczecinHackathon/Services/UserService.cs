@@ -41,8 +41,10 @@ namespace SzczecinHackathon.Services
             if (updatedUser == null)
                 return new ServiceResponse<User> { Success = false, Message = "No user with this email in db" };
 
-            user.Name = updatedUser.Name;
-            user.LastName = updatedUser.LastName;
+            user.Name = updatedUser.Name == "string" || updatedUser.Name == "" || updatedUser.Name == null || updatedUser.Name == " " ? user.Name : updatedUser.Name;
+            user.LastName = updatedUser.LastName == "string" || updatedUser.LastName == "" || updatedUser.LastName == null || updatedUser.LastName == " " ? user.LastName : updatedUser.LastName;
+            user.Description = updatedUser.Description == "string" || updatedUser.Description == "" || updatedUser.Description == null || updatedUser.Description == " " ? user.Description : updatedUser.Description;
+            user.Birthday = updatedUser.Birthday == DateTime.MinValue ? user.Birthday : updatedUser.Birthday;
 
             _dataContext.Users.Update(user);
             await _dataContext.SaveChangesAsync();

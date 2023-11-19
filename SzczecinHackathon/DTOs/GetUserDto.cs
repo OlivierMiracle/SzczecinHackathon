@@ -6,5 +6,7 @@
         public string LastName { get; set; }
         public string Email { get; set; }
         public string ImagePath { get; set; }
+        public string Description { get; set; }
+        public DateTime Birthday { get; set; }  
     }
 }
