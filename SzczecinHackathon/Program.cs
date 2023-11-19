@@ -5,7 +5,7 @@ using SzczecinHackathon.Services;
 using SzczecinHackathon.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddCors();
 // Add services to the container.
 
 builder.Services.AddDbContext<DataContext>(options =>
@@ -18,6 +18,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
@@ -25,6 +27,13 @@ builder.Services.AddScoped<IFriendsService, FriendService>();
 builder.Services.AddScoped<IHappeningService, HappeningService>();
 
 var app = builder.Build();
+
+app.UseCors(builder => builder
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .SetIsOriginAllowed((host) => true)
+                .AllowCredentials()
+            );
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

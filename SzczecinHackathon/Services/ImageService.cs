@@ -22,6 +22,21 @@ namespace SzczecinHackathon.Services
         public async Task<ServiceResponse<string>> WriteImageToDisk(byte[] arr, string email)
         {
             var filename = $@"images\{DateTime.Now.Ticks}.";
+            User? user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+
+            if (user == null)
+            {
+                return new ServiceResponse<string>
+                {
+                    Success = false,
+                    Message = "Gostka ni ma"
+                };
+            }
+
+            //if (user.ImagePath != null) 
+            //{
+            //    File.Delete(user.ImagePath);
+            //}
 
             string path = "";
 
@@ -40,17 +55,6 @@ namespace SzczecinHackathon.Services
                 }
                 path = Path.Combine(_hostingEnvironment.ContentRootPath, filename);
                 im.Save(path, frmt);
-            }
-
-            User? user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Email == email);
-            
-            if (user == null) 
-            {
-                return new ServiceResponse<string>
-                {
-                    Success = false,
-                    Message = "Gostka ni ma"
-                };
             }
 
             user.ImagePath = path;
