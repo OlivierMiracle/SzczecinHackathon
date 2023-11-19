@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using SzczecinHackathon.Controllers;
 using SzczecinHackathon.Data;
 using SzczecinHackathon.Models;
@@ -108,6 +107,38 @@ namespace SzczecinHackathon.Services
 
             _dataContext.Add(chat);
             await _dataContext.SaveChangesAsync();
+        }
+
+        public async Task<ServiceResponse<Chat>> CreateRandomChat(string userId)
+        {
+            var response = new ServiceResponse<Chat>();
+
+            var chatUsers = new List<ChatUser>();
+            await _dataContext.Users.ForEachAsync(c => chatUsers.Add(new ChatUser { UserId = c.Email }));
+
+            Chat chat = new Chat();
+            _dataContext.Add(chat);
+            _dataContext.SaveChanges();
+
+            chatUsers.ForEach(c => c.ChatId = chat.Id);
+            var you = chatUsers.First(c => c.UserId == userId);
+            chatUsers.Remove(you);
+
+            Random rnd = new Random();
+            int pick = rnd.Next(chatUsers.Count);
+
+            chat.ChatUsers = new List<ChatUser> { chatUsers[pick], you };
+            response.Data = chat;
+            return response;
+        }
+        public async Task<ServiceResponse> DeleteChat(int chatId)
+        {
+            var toDeletion = await _dataContext.Chats.FirstOrDefaultAsync(c => c.Id == chatId);
+
+            if (toDeletion == null)
+                return new ServiceResponse { Success = false};
+            else
+                return new ServiceResponse { Success = true };
         }
     }
 }
