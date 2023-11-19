@@ -6,4 +6,10 @@
         public bool Success { get; set; } = true;
         public string Message { get; set; } = String.Empty;
     }
+
+    public class ServiceResponse
+    {
+        public bool Success { get; set; } = true;
+        public string Message { get; set; } = String.Empty;
+    }
 }

@@ -19,7 +19,7 @@ namespace SzczecinHackathon.Controllers
             _messageService = messageService;
         }
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<List<Chat>>>> GetUserChats (string userId)
+        public async Task<ActionResult<ServiceResponse<List<int>>>> GetUserChats (string userId)
         {
             var response = await _messageService.GetUserChats(userId);
 
@@ -30,7 +30,20 @@ namespace SzczecinHackathon.Controllers
         {
             var response = await _messageService.GetChatMessages(chatId);
 
-            return Ok(response);
+            if (response.Success == false)
+                return BadRequest(response);
+            else
+                return Ok(response);
+        }
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<string>>>> GetChatUsers(int chatId)
+        {
+            var response = await _messageService.GetChatUsers(chatId);
+
+            if(response.Success == false)
+                return BadRequest(response);
+            else
+                return Ok(response);
         }
         [HttpPut]
         public async Task<ActionResult> PutMessage(string content, int chat, string user)
@@ -51,6 +64,26 @@ namespace SzczecinHackathon.Controllers
             await _messageService.CreateChat(userIds);
 
             return Ok();
+        }
+        [HttpPost]
+        public async Task<ActionResult<ServiceResponse<Chat>>> CreateRandomChat(string userId)
+        {
+            var response = await _messageService.CreateRandomChat(userId);
+
+            if (response.Success == false)
+                return BadRequest(response);
+            else
+                return Ok(response);
+        }
+        [HttpDelete]
+        public async Task<ActionResult> DeleteChat(int chatId)
+        {
+            var response = await _messageService.DeleteChat(chatId);
+
+            if (response.Success == false)
+                return BadRequest(response);
+            else
+                return Ok(response);
         }
     }
 }
