@@ -18,6 +18,26 @@ namespace SzczecinHackathon.Controllers
             _dataContext = dataContext;
             _messageService = messageService;
         }
+
+        [HttpGet]
+        public async Task<ActionResult<ServiceResponse<List<Message>>>> GetConversationWithSelectedUser(string user, string addressee)
+        {
+            var response = await _messageService.GetConversationWithSelectedUser(user, addressee);
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> PutMessageToChatWithSelectedUser(string user, string addressee, string message)
+        {
+            await _messageService.PutMessageToChatWithSelectedUser(user, addressee, message);
+
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<ActionResult<ServiceResponse<List<int>>>> GetUserChats (string userId)
         {
