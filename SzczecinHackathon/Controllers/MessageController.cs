@@ -66,7 +66,7 @@ namespace SzczecinHackathon.Controllers
             return Ok();
         }
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<Chat>>> CreateRandomChat(string userId)
+        public async Task<ActionResult<ServiceResponse<int>>> CreateRandomChat(string userId)
         {
             var response = await _messageService.CreateRandomChat(userId);
 

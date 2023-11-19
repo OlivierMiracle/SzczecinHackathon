@@ -109,16 +109,15 @@ namespace SzczecinHackathon.Services
             await _dataContext.SaveChangesAsync();
         }
 
-        public async Task<ServiceResponse<Chat>> CreateRandomChat(string userId)
+        public async Task<ServiceResponse<int>> CreateRandomChat(string userId)
         {
-            var response = new ServiceResponse<Chat>();
+            var response = new ServiceResponse<int>();
 
             var chatUsers = new List<ChatUser>();
             await _dataContext.Users.ForEachAsync(c => chatUsers.Add(new ChatUser { UserId = c.Email }));
 
             Chat chat = new Chat();
             _dataContext.Add(chat);
-            _dataContext.SaveChanges();
 
             chatUsers.ForEach(c => c.ChatId = chat.Id);
             var you = chatUsers.First(c => c.UserId == userId);
@@ -128,7 +127,9 @@ namespace SzczecinHackathon.Services
             int pick = rnd.Next(chatUsers.Count);
 
             chat.ChatUsers = new List<ChatUser> { chatUsers[pick], you };
-            response.Data = chat;
+            await _dataContext.SaveChangesAsync();
+            response.Data = _dataContext.Entry(chat).Entity.Id;
+
             return response;
         }
         public async Task<ServiceResponse> DeleteChat(int chatId)
@@ -137,8 +138,10 @@ namespace SzczecinHackathon.Services
 
             if (toDeletion == null)
                 return new ServiceResponse { Success = false};
-            else
-                return new ServiceResponse { Success = true };
+
+            _dataContext.Chats.Remove(toDeletion);
+            await _dataContext.SaveChangesAsync();
+             return new ServiceResponse { Success = true };
         }
     }
 }
